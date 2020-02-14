@@ -1,9 +1,16 @@
+"""
+Board.py
+The Gameboard of minesweeper. This file contains the logic of the game. 
+The Gameboard should be at least 3X3 under current implementation
+ruiduoray@berkeley.edu 2/13/2020
+
+"""
 from random import randint
 
 class Board():
 	def __init__(self, length, width, num_mine):
-		if length <= 0 or width <= 0 or num_mine <= 0:
-			raise ValueError("length and width and number of mines all have to be at least 1")
+		if length < 3 or width < 3 or num_mine < 1:
+			raise ValueError("length and width need to be at least 3 and number of mines need to be at least 1")
 		if num_mine > length * width:
 			raise ValueError("There will be more mines than the number of cells")
 
@@ -33,9 +40,7 @@ class Board():
 	def check_win(self):
 		return self.num_cell_revealed == self.num_safe_cell or self.flag_set == self.mine_set
 
-	def reveal(self, row, column, firstClick = False):
-		if firstClick and self.revealed_board[row][column] == '!':
-			self.flag(row, column)
+	def reveal(self, row, column):
 		if self.revealed_board[row][column] != '':
 			return
 		num = self.row_column_to_num(row, column)
@@ -47,7 +52,7 @@ class Board():
 
 
 		count = self.count_dict.get(num, 0)
-		self.revealed_board[row][column] = count
+		self.revealed_board[row][column] = str(count)
 		self.num_cell_revealed += 1
 		if count == 0:
 			for cell in self.get_around_nums(num):
@@ -112,7 +117,7 @@ class Board():
 			else:
 				ret += '\n' + str(count) + ' '
 			for cell in row:
-				ret += (str(cell) or '-') + '  '
+				ret += (cell or '-') + '  '
 			count += 1
 		return ret
 
@@ -120,12 +125,12 @@ class Board():
 	def REVEALMINE(self):
 		for num in self.mine_set:
 			r, c = self.num_to_row_column(num)
-			self.reveal(r, c, True)
+			self.reveal(r, c)
 
 	def REVEALBOARD(self):
 		for i in range(0, self.length * self.width):
 			r, c = self.num_to_row_column(i)
-			self.reveal(r, c, True)
+			self.reveal(r, c)
 
 	def FLAGTHEREST(self):
 		for num in self.mine_set:

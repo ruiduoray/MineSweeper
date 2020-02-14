@@ -1,3 +1,11 @@
+"""
+TerminalGUI.py
+Support to play in terminal.
+Run with the command "python3 TerminalGUI.py"
+ruiduoray@berkeley.edu 2/13/2020
+
+"""
+
 import Board
 
 if __name__ == "__main__":
@@ -19,7 +27,7 @@ if __name__ == "__main__":
 						GameBoard = Board.Board(length,width,num_mine)
 						break
 					except ValueError:
-						print("Please enter a valid customization: (width > 0; length > 0 and 0 < number of mine < width * length)")
+						print("Please enter a valid customization: (width > 2; length > 2 and 0 < number of mine < width * length)")
 						continue
 				break
 			else:
@@ -61,7 +69,7 @@ if __name__ == "__main__":
 		
 
 			if choice == 1:
-				GameBoard.reveal(r,c, True)
+				GameBoard.reveal(r,c)
 
 			if choice == 2:
 				GameBoard.flag(r,c)
